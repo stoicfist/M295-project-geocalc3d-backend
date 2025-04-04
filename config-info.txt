@@ -9,5 +9,3 @@ PostgreSQL:
   User: postgres
   Passwort: postgres
   Port: 5432
-
-Hinweis: Beide Systeme lokal via Docker startbar (siehe README).
