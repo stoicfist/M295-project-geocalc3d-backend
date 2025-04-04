@@ -25,10 +25,12 @@ Rollen (Realm Roles):
 Empfohlene Benutzer:
   - Benutzer: user
     Passwort: user
+    temporary: off
     Rolle: USER
 
   - Benutzer: admin
     Passwort: admin
+    temporary: off
     Rolle: ADMIN
 
 Import:
