@@ -78,4 +78,4 @@ src/
 
 ---
 
-> Dieses Projekt ist Teil des Kompetenznachweises im Modul 295 (Backend für Applikationen realisieren). Es erfüllt alle definierten Kriterien wie Keycloak, REST, CRUD, PostgreSQL und Swagger.
+> Dieses Projekt ist Teil des Kompetenznachweises im Modul 295 (Backend für Applikationen realisieren).
