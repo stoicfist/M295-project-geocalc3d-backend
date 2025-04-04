@@ -1,0 +1,13 @@
+Keycloak:
+  Realm: geocalc
+  Admin-Login: admin / admin
+  Port: 8080
+  Rollen: USER, ADMIN
+
+PostgreSQL:
+  DB-Name: geocalc
+  User: postgres
+  Passwort: postgres
+  Port: 5432
+
+Hinweis: Beide Systeme lokal via Docker startbar (siehe README).
