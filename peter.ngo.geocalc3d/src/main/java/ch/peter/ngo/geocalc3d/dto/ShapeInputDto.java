@@ -7,6 +7,13 @@ public class ShapeInputDto {
     private Map<String, Double> parameters;
     private String owner; // Neues Feld hinzugefügt
 
+    // Konstruktor
+    public ShapeInputDto(String shapeType, Map<String, Double> parameters, String owner) {
+        this.shapeType = shapeType;
+        this.parameters = parameters;
+        this.owner = owner;
+    }
+
     // Getter und Setter
     public String getShapeType() {
         return shapeType;

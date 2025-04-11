@@ -9,9 +9,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.security.RolesAllowed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "bearerAuth")
 @Tag(name = "Shapes", description = "Verwaltung von 3D-Figuren")
 public class ShapeController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ShapeController.class);
 
     private final ShapeService shapeService;
 
@@ -28,10 +33,15 @@ public class ShapeController {
 
     @Operation(summary = "Neue Figur erstellen", description = "Erstellt eine neue geometrische Figur mit Parametern wie Radius oder Höhe", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponse(responseCode = "201", description = "Figur erfolgreich erstellt")
-    @RolesAllowed(Roles.Admin)
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<FigureInput> createShape(@RequestBody ShapeInputDto input) {
-        FigureInput saved = shapeService.saveShape(input);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        try {
+            FigureInput saved = shapeService.saveShape(input);
+            return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        } catch (Exception e) {
+            logger.error("Fehler beim Erstellen der Figur: {}", e.getMessage(), e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
