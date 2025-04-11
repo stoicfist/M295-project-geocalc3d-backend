@@ -1,5 +1,6 @@
 package ch.peter.ngo.geocalc3d.entity;
 
+import ch.peter.ngo.geocalc3d.util.JsonMapConverter;
 import jakarta.persistence.*;
 import java.util.Map;
 
@@ -12,13 +13,13 @@ public class FigureInput {
 
     private String shapeType;
 
-    @Column(columnDefinition = "jsonb")
-    @Convert(converter = JsonConverter.class)
+    @Column(columnDefinition = "jsonb", nullable = false)
+    @Convert(converter = JsonMapConverter.class)
     private Map<String, Double> parameters;
 
     private String owner;
 
-    // Getters and Setters
+    // Getter und Setter
     public Long getId() {
         return id;
     }
