@@ -8,7 +8,7 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:postgresql://localhost:5432/geometry_visualizer_db
+    url: jdbc:postgresql://localhost:5432/geom3d_db
     username: postgres 
     password: postgres
     driverClassName: org.postgresql.Driver
@@ -17,6 +17,6 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8080/realms/GeoCalc3D
-
 app:
-  name: 3d-geometry-visualizer
+    name: GeoCalc3D       
+
