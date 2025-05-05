@@ -56,4 +56,7 @@ public class CalculationResult {
     public void setFigure(FigureInput figure) {
         this.figure = figure;
     }
+
+    public CalculationResult() {
+    }
 }

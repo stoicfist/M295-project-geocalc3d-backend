@@ -1,8 +1,9 @@
 package ch.peter.ngo.geocalc3d.entity;
 
 import jakarta.persistence.*;
+import com.vladmihalcea.hibernate.type.json.JsonType;
+import org.hibernate.annotations.Type;
 import java.util.Map;
-import ch.peter.ngo.geocalc3d.converter.ParametersConverter;
 
 @Entity
 public class FigureInput {
@@ -13,8 +14,8 @@ public class FigureInput {
 
     private String shapeType;
 
-    @Column(columnDefinition = "jsonb", nullable = false)
-    @Convert(converter = ParametersConverter.class)
+    @Type(JsonType.class)
+    @Column(columnDefinition = "jsonb")
     private Map<String, Double> parameters;
 
     private String owner;
@@ -50,5 +51,8 @@ public class FigureInput {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public FigureInput() {
     }
 }
