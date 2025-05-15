@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 
 import java.util.stream.Collectors;
 
@@ -60,6 +62,12 @@ public class SecurityConfig {
             }
         };
     }
+
+    @Bean
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withJwkSetUri("http://localhost:8080/realms/GeoCalc3D/protocol/openid-connect/certs")
+            .build();
+}
 
     @GetMapping("/oidc-principal")
     public OidcUser getOidcUserPrincipal(
