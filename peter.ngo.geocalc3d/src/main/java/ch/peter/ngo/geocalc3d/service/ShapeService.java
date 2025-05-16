@@ -5,7 +5,11 @@ import ch.peter.ngo.geocalc3d.entity.FigureInput;
 import ch.peter.ngo.geocalc3d.repository.FigureInputRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ShapeService {
@@ -20,17 +24,22 @@ public class ShapeService {
 
     public FigureInput saveShape(ShapeInputDto dto) {
         try {
-            // Konvertiere DTO in Entity
             FigureInput figureInput = new FigureInput();
             figureInput.setShapeType(dto.getShapeType());
             figureInput.setParameters(dto.getParameters());
-            figureInput.setOwner(dto.getOwner());
 
-            // Speichere in der Datenbank
+            // 👇 Benutzername aus Spring Security holen
+            String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+            figureInput.setOwner(currentUsername);
+
             return figureInputRepository.save(figureInput);
         } catch (Exception e) {
             logger.error("Fehler beim Speichern der Figur: {}", e.getMessage(), e);
-            throw e; // Exception weiterwerfen, damit sie im Controller behandelt wird
+            throw e;
         }
+    }
+
+    public List<FigureInput> getAllShapes() {
+        return figureInputRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
     }
 }

@@ -17,6 +17,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/shapes")
 @SecurityRequirement(name = "bearerAuth")
@@ -43,5 +45,20 @@ public class ShapeController {
             logger.error("Fehler beim Erstellen der Figur: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @Operation(summary = "Liste aller erstellten Figuren", description = "Gibt eine Liste aller gespeicherten Figuren zurück")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/history")
+    public ResponseEntity<List<FigureInput>> getAllShapes() {
+        List<FigureInput> history = shapeService.getAllShapes();
+        return ResponseEntity.ok(history);
+    }
+
+    @Operation(summary = "Alle gespeicherten Figuren abrufen", description = "Gibt alle gespeicherten Figuren zurück", security = @SecurityRequirement(name = "bearerAuth"))
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<List<FigureInput>> getAllShapesDirect() {
+        return ResponseEntity.ok(shapeService.getAllShapes());
     }
 }

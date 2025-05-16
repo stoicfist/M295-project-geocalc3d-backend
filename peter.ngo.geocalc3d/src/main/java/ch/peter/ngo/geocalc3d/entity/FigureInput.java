@@ -3,6 +3,8 @@ package ch.peter.ngo.geocalc3d.entity;
 import jakarta.persistence.*;
 import com.vladmihalcea.hibernate.type.json.JsonType;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.CreationTimestamp;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Entity
@@ -19,6 +21,10 @@ public class FigureInput {
     private Map<String, Double> parameters;
 
     private String owner;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
 
     // Getter und Setter
     public Long getId() {
@@ -51,6 +57,10 @@ public class FigureInput {
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     public FigureInput() {
