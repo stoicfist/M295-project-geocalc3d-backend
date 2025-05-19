@@ -1,0 +1,47 @@
+🔐 KEYCLOAK-KONFIGURATION
+-------------------------
+
+Realm-Name:
+  geocalc
+
+Admin Login:
+  Benutzername: admin
+  Passwort: admin
+
+Server:
+  http://localhost:8081
+
+Clients:
+  - Name: geocalc-backend
+    Client Type: bearer-only
+    Beschreibung: Spring Boot REST API (verifiziert Tokens, kein Login)
+    Redirect URIs: (nicht benötigt)
+    Rollen-Mapping: Rollen USER und ADMIN sind als Realm Roles vorhanden und werden ins Access Token gemappt
+
+Rollen (Realm Roles):
+  - USER: kann eigene Geometrieberechnungen durchführen
+  - ADMIN: sieht alle Berechnungen, kann Benutzer verwalten
+
+Empfohlene Benutzer:
+  - Benutzer: user
+    Passwort: user
+    temporary: off
+    Rolle: USER
+
+  - Benutzer: admin
+    Passwort: admin
+    temporary: off
+    Rolle: ADMIN
+
+Import:
+  Realm-Export-Datei: `keycloak-config/geocalc-realm.json`
+
+Hinweis:
+  Dieser Realm ist speziell auf das Backend `geocalc-backend` abgestimmt. Ein separater Client für das Angular-Frontend kann später unter dem Namen `geocalc-frontend` erstellt werden.
+
+
+PostgreSQL:
+  DB-Name: geocalc
+  User: postgres
+  Passwort: postgres
+  Port: 5432
