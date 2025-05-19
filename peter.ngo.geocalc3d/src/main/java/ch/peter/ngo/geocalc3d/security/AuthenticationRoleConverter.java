@@ -24,36 +24,37 @@ public class AuthenticationRoleConverter implements Converter<Jwt, AbstractAuthe
 
     public AuthenticationRoleConverter(String clientName) {
         defaultGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
-        defaultGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_"); // Präfix hinzugefügt
+        defaultGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
         this.clientName = clientName;
     }
 
+    // ✅ Neu: Rollen aus realm_access lesen
     private Collection<? extends GrantedAuthority> extractResourceRoles(final Jwt jwt) {
-        logger.debug("Extracting resource roles for client: {}", clientName);
-        Map<String, Object> resourceAccess = jwt.getClaim("resource_access");
+        logger.debug("Extracting roles from realm_access");
 
-        if (resourceAccess != null && resourceAccess.containsKey(clientName)) {
-            Map<String, Object> client = (Map<String, Object>) resourceAccess.get(clientName);
+        Map<String, Object> realmAccess = jwt.getClaim("realm_access");
 
-            if (client != null && client.containsKey("roles")) {
-                Collection<String> resourceRoles = (Collection<String>) client.get("roles");
-                logger.debug("Extracted resource roles: {}", resourceRoles);
-                return resourceRoles.stream()
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toSet());
-            }
+        if (realmAccess != null && realmAccess.containsKey("roles")) {
+            Collection<String> realmRoles = (Collection<String>) realmAccess.get("roles");
+            logger.debug("Extracted realm roles: {}", realmRoles);
+            return realmRoles.stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                    .collect(Collectors.toSet());
         }
 
-        logger.debug("No resource roles found for client: {}", clientName);
+        logger.debug("No roles found in realm_access");
         return Collections.emptySet();
     }
 
     @Override
     public AbstractAuthenticationToken convert(final Jwt source) {
         logger.debug("Converting JWT: {}", source.getClaims());
+
         Collection<GrantedAuthority> authorities = Stream.concat(
                 defaultGrantedAuthoritiesConverter.convert(source).stream(),
-                extractResourceRoles(source).stream()).collect(Collectors.toSet());
+                extractResourceRoles(source).stream()
+        ).collect(Collectors.toSet());
+
         logger.debug("Final authorities: {}", authorities);
         return new JwtAuthenticationToken(source, authorities);
     }
