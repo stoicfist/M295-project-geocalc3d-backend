@@ -1,0 +1,23 @@
+# === Java / Spring Boot Backend ===
+peter.ngo.geocalc3d/target/
+peter.ngo.geocalc3d/*.log
+peter.ngo.geocalc3d/hs_err_pid*.log
+peter.ngo.geocalc3d/.vscode/
+
+# === Maven ===
+peter.ngo.geocalc3d/.mvn/
+peter.ngo.geocalc3d/pom.xml.tag
+peter.ngo.geocalc3d/pom.xml.releaseBackup
+peter.ngo.geocalc3d/pom.xml.versionsBackup
+peter.ngo.geocalc3d/release.properties
+
+# === IDEs & Editors ===
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+
+# === macOS / Windows ===
+.DS_Store
+Thumbs.db
